@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ErrorPage</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+    <label>Error Page</label>
+    <input type="button" id="backBtn" value="返回">
+<script>
+
+     $("#backBtn").bind("click", function(){
+
+       window.location.href = 'http://127.0.0.1:8082/login';
+      });
+
+
+</script>
+</body>
+</html>

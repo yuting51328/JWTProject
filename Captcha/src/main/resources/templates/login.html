@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Captcha</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<div>
+    <div>
+        <form>
+            <input type="text" id="inputCode" placeholder="請輸入驗證碼" maxlength="4">
+            <input type="button" id="check" value="確定">
+            <label id="status"></label>
+        </form>
+    </div>
+    <div>
+        <!-- 當用戶鏈接時，void(0)計算為0,用戶點擊不會發生任何效果 -->
+        <a href="javascript:void(1);" rel="external nofollow"  title="點擊更換驗證碼">
+            <!--this參數, 返回當前的DOM元素-->
+            <img src="" alt="更換驗證碼" id="imgVerify">
+        </a>
+    </div>
+</div>
+<script>
+    //獲得img對象
+    let imgVerify = $("#imgVerify").get(0);
+
+    $(function () {
+        getVerify();
+    });
+    //onclick時間綁定的getVerify函數
+    $("#imgVerify").bind("click", getVerify);
+    function getVerify() {
+        $("#imgVerify").show().attr('src', '/captcha/image').fadeIn();
+    };
+
+    $("#check").bind("click", function(){
+
+        var requestData = {
+         inputCode: $.trim($("#inputCode").val())
+       };
+
+        $.ajax({
+          url:"/captcha/checkImage",
+          method:"POST",
+          dataType:"json",
+          contentType : 'application/json;charset=UTF-8',
+          data:JSON.stringify(requestData),
+
+          success:function(res){
+            console.log(res);
+            console.log("text-->"+res.result);
+            var checkIp = res.checkIp;
+            var checkLoginNum = res.checkLoginNum;
+
+
+            if(checkLoginNum == 'true' && checkIp != 'true'){
+                $("#status").text("人數已達上限，請稍後再試");
+            }else{
+                window.location.href = 'http://127.0.0.1:10000/page';
+            }
+
+
+          },
+          error:function(err){
+            console.log(err);
+            $("#status").text("驗整碼有誤或過期，請重新輸入");
+            getVerify();
+            }
+        });
+      });
+
+
+</script>
+</body>
+</html>

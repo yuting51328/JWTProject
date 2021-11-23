@@ -1,0 +1,54 @@
+
+
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      default-filters:
+        - DedupeResponseHeader=Vary Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
+
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: ["http://localhost:10000", "http://localhost:8082", "http://localhost:8081"]
+            allowedMethods:
+              - GET
+              - POST
+            allowedHeaders: "*"
+            allowedCredentials: true
+
+ #     routes:
+  #      - id: default_path_to_http
+  #        uri: http://localhost:8081
+  #        predicates:
+  #          - Path=/api/users
+  main:
+    web-application-type: reactive
+
+  #        filters:
+  #          - SetPath=/
+
+server:
+  port: 10000
+  ssl:
+    enabled: false
+ # ssl:
+  # ciphers: ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA256,TLS_RSA_WITH_AES_256_CBC_SHA
+ #  protocol: TLS
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
+    register-with-eureka: false
+    fetch-registry: false
+  instance:
+    hostname: localhost
+management.endpoints.web.exposure.include: gateway
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
+

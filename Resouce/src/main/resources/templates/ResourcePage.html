@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ResourcePage</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<label>ResourcePage</label>
+<script>
+
+    $(function () {
+        getVerify();
+    });
+
+    function getVerify() {
+
+        fetch('http://127.0.0.1:10000/authorizise',{
+                method: "POST",
+                credentials: "include"}
+                )
+        .then((response) => {
+            console.log(response);
+            if (response.status === 403) throw new Error('403 is unacceptable !');
+         })
+        .catch((error) => {
+            console.log(`Error: ${error}`);
+            window.location.href = 'http://127.0.0.1:8081/errorPage';
+        });
+
+    };
+
+
+</script>
+</body>
+</html>

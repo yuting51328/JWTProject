@@ -1,0 +1,9 @@
+server:
+  port: 8082
+  servlet:
+    session:
+      timeout: 1
+spring:
+  redis:
+    host: 172.18.0.2
+    port: 6379
